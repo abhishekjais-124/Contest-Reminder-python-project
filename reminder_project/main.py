@@ -5,16 +5,34 @@ import re
 from twilio.rest import Client
 import random
 from datetime import timedelta
-import math
-
 
 
 sid= "ACd1f57b2f44498ee9e39f7426da0607cd"
-token = "*****************************"  #not shown due to privacy
+token = "3eddac6a80625f8985dbcec2ade29013"
 client = Client(sid,token)
 Name = []
 p_title = []
 level = ['school','easy']
+
+f1 = open("leetcode.txt","r")
+i = 0
+Full = []
+for line in f1:
+    if len(line) >= 10:
+        x = line.split('\t')
+        for i in x:
+            if not (i.isspace() or i == ''):
+                i = ('-').join(i.strip().lower().split(" "))
+                if len(i)> 0:
+                    Full.append(i)
+                break
+#print(Full)
+leet_prob = "https://leetcode.com/problems/"
+n2 = len(Full)
+choose2 = random.randint(0,n2-1)
+y1 = " ".join(Full[choose2].split('-')).capitalize()
+y3 = leet_prob + Full[choose2]
+#print(y1,y3)
 
 for i in level:
     URL2 = "https://www.codechef.com/problems/" + i
@@ -22,11 +40,14 @@ for i in level:
     soup2 = BeautifulSoup(parsed_html.content,"html.parser")
     data2 = str(soup2.findAll("tr", class_ = "problemrow"))
     Name += re.findall(r'<b>(.*?)</b>',data2)
-    p_title += re.findall(r'Submit a solution to this problem.">(.*?)</a>',data2)
-#print(Name)
+    p_title += re.findall(r'/status/(.*?)"',data2)
+#print(data2)
 #print(p_title)
 total = len(Name)
-choose = random.randint(0,total-1)
+#print(len(Name),len(p_title))
+choose = random.randint(0,total-2)
+#for i in range(total):
+#    print(Name[i],p_title[i])
 
 x1 = Name[choose] + " ("  + p_title[choose] + ")"
 x3 = "https://www.codechef.com/problems/" + p_title[choose]
@@ -83,7 +104,7 @@ for i in range(events):
     #print(a,b,c.days)
     loc = location[i][2:]
     zz = contest_title[i][2:].lower()
-    if c.days <= 10 and fun(loc) and d.days < 2:
+    if c.days <= 10 and fun(loc) and d.days < 1:
         if 'hacker' in loc:
             ff = 0
             for m in Neg:
@@ -108,18 +129,22 @@ for i in range(events):
 #print(A)
 
 Numbers = ["7615815667"]
-
 msg  = "Contest Reminder" + '\n\n'
 c = 0
 n = len(A)
 print("Working...")
+
 for i in A:
     msg += '*' + str(c+1) +'*'+ ". " +'*'+ i[0] + '*'+ '\n' + 'Start: ' + i[1] + '\n' + 'End: ' + i[2] + '\n' + 'Duration: ' + i[3] + '\n' + 'link: ' + i[4] + '\n\n'
     c += 1
     print(c)
-    if c % 6 == 0 or c == n:
+    if c % 5 == 0 or c == n:
         if c == n:
-            msg += '_Problem of the day_' + '\n\n' + '*' +x1 +'*\n' + x3 + '\n\n' + "By AJ"
+            ch3 = random.randint(1,100)
+            if ch3 %2 ==0:
+                msg += '_Problem of the day_' + '\n\n' + '*' +x1 +'*\n' + x3 + '\n\n' + "By AJ"
+            else:
+                msg += '_Problem of the day_' + '\n\n' + '*' +y1 +'*\n' + y3 + '\n\n' + "By AJ"
         for j in Numbers:
             message = client.messages.create(body = msg, from_ = "whatsapp:+14155238886",to = "whatsapp:+91" + j)
         msg = ""
