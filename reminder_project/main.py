@@ -7,8 +7,8 @@ import random
 from datetime import timedelta
 
 
-sid= "ACd1f57b2f44498ee9e39f7426da0607cd"
-token = "3eddac6a80625f8985dbcec2ade29013"
+sid= "" #not written due to privacy
+token = ""#due to privacy
 client = Client(sid,token)
 Name = []
 p_title = []
